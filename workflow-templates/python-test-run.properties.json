@@ -2,5 +2,5 @@
   "name": "Python test run"
   "description": "Workflow to test and run python"
   "iconName": "octicons-react"
-  "categories": ["TEST"]
+  "categories": ["Deployment"]
 }
