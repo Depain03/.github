@@ -1,0 +1,70 @@
+name: Run Hello World
+
+on: 
+  push:
+    branches: [ $default-branch ]
+  workflow_dispatch: #maunual trigger
+
+jobs:
+  # self-host-test:
+  #   runs-on: depain-mac
+  #   steps:
+  #     - name: test run
+  #       run: |
+  #         echo Hello
+  #         echo Depain
+
+  pytest: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout SCM
+        uses: actions/checkout@v4
+
+      - name: Setup Python Env
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Test Hello World
+        run: python3 -m unittest test.test_hello_world
+        
+  pyrun:
+    needs: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout SCM
+        uses: actions/checkout@v4
+
+      - name: Setup Python Env
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Hello World
+        run: python3 hello-world.py --name Depain
+  
+  hello-world-template:
+    needs: pyrun
+    uses: "./.github/workflows/hello-world-template.yml"
+    with:
+      input_name: Templated Depain
+    secrets: 
+      hello-secret: ${{ secrets.HELLO_SECRET }}
+  
+  hello-world-template-shared:
+    needs: pyrun
+    uses: "Depain03/github-actions-shared/.github/workflows/hello-world-template-shared.yml@main"
+    with:
+      input_name: Templated Depain
+    secrets: 
+      hello-secret: ${{ secrets.HELLO_SECRET }}
+
+
+
+    
+  
+
+    
+
+    
+
